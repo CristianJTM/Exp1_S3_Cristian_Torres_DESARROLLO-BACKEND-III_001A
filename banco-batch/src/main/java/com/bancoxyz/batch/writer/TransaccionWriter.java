@@ -1,8 +1,8 @@
 package com.bancoxyz.batch.writer;
 
-import com.bancoxyz.batch.config.BatchDataConfig.TransaccionProcesada;
-import com.bancoxyz.batch.model.Transaccion;
-import com.bancoxyz.batch.repository.TransaccionRepository;
+import com.bancoxyz.batch.config.BatchDataConfig;
+import com.bancoxyz.batch.model.TransaccionProcesada;
+import com.bancoxyz.batch.repository.TransaccionProcesadaRepository;
 
 
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -11,31 +11,31 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TransaccionWriter
-        implements ItemWriter<TransaccionProcesada> {
+        implements ItemWriter<BatchDataConfig.TransaccionProcesada> {
 
-    private final TransaccionRepository transaccionRepository;
+    private final TransaccionProcesadaRepository transaccionProcesadaRepository;
 
     public TransaccionWriter(
-            TransaccionRepository transaccionRepository) {
+            TransaccionProcesadaRepository transaccionProcesadaRepository) {
 
-        this.transaccionRepository = transaccionRepository;
+        this.transaccionProcesadaRepository = transaccionProcesadaRepository;
     }
 
     @Override
     public void write(
-            Chunk<? extends TransaccionProcesada> chunk) {
+            Chunk<? extends BatchDataConfig.TransaccionProcesada> chunk) {
 
-        for (TransaccionProcesada item : chunk.getItems()) {
+        for (BatchDataConfig.TransaccionProcesada item : chunk.getItems()) {
 
-            Transaccion transaccion = new Transaccion();
+            TransaccionProcesada transaccionProcesada = new TransaccionProcesada();
 
-            transaccion.setId(item.id());
-            transaccion.setFecha(item.fecha());
-            transaccion.setMonto(item.monto());
-            transaccion.setTipo(item.tipo());
-            transaccion.setObservacion(item.observacion());
+            transaccionProcesada.setId(item.id());
+            transaccionProcesada.setFecha(item.fecha());
+            transaccionProcesada.setMonto(item.monto());
+            transaccionProcesada.setTipo(item.tipo());
+            transaccionProcesada.setObservacion(item.observacion());
 
-            transaccionRepository.save(transaccion);
+            transaccionProcesadaRepository.save(transaccionProcesada);
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.bancoxyz.batch.writer;
 
-import com.bancoxyz.batch.config.BatchDataConfig.InteresProcesado;
-import com.bancoxyz.batch.model.Interes;
-import com.bancoxyz.batch.repository.CuentaRepository;
+import com.bancoxyz.batch.config.BatchDataConfig;
+import com.bancoxyz.batch.model.InteresProcesado;
+import com.bancoxyz.batch.repository.InteresProcesadoRepository;
 
 
 import org.springframework.batch.infrastructure.item.Chunk;
@@ -11,34 +11,34 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InteresWriter
-        implements ItemWriter<InteresProcesado> {
+        implements ItemWriter<BatchDataConfig.InteresProcesado> {
 
-    private final CuentaRepository cuentaRepository;
+    private final InteresProcesadoRepository interesProcesadoRepository;
 
     public InteresWriter(
-            CuentaRepository cuentaRepository) {
+            InteresProcesadoRepository interesProcesadoRepository) {
 
-        this.cuentaRepository = cuentaRepository;
+        this.interesProcesadoRepository = interesProcesadoRepository;
     }
 
     @Override
     public void write(
-            Chunk<? extends InteresProcesado> chunk) {
+            Chunk<? extends BatchDataConfig.InteresProcesado> chunk) {
 
-        for (InteresProcesado item : chunk.getItems()) {
+        for (BatchDataConfig.InteresProcesado item : chunk.getItems()) {
 
-            Interes interes = new Interes();
+            InteresProcesado interesProcesado = new InteresProcesado();
 
-            interes.setCuentaId(item.cuentaId());
-            interes.setNombre(item.nombre());
-            interes.setSaldoInicial(item.saldoInicial());
-            interes.setEdad(item.edad());
-            interes.setTipo(item.tipo());
-            interes.setTasa(item.tasa());
-            interes.setInteres(item.interes());
-            interes.setSaldoFinal(item.saldoFinal());
+            interesProcesado.setCuentaId(item.cuentaId());
+            interesProcesado.setNombre(item.nombre());
+            interesProcesado.setSaldoInicial(item.saldoInicial());
+            interesProcesado.setEdad(item.edad());
+            interesProcesado.setTipo(item.tipo());
+            interesProcesado.setTasa(item.tasa());
+            interesProcesado.setInteres(item.interes());
+            interesProcesado.setSaldoFinal(item.saldoFinal());
 
-            cuentaRepository.save(interes);
+            interesProcesadoRepository.save(interesProcesado);
         }
     }
 }

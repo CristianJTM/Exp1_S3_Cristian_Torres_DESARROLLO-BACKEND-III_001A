@@ -1,9 +1,12 @@
 package com.bancoxyz.batch.writer;
 
 import com.bancoxyz.batch.config.BatchDataConfig.CuentaAnualProcesada;
+import com.bancoxyz.batch.model.Cuenta;
 import com.bancoxyz.batch.model.CuentaAnual;
+import com.bancoxyz.batch.model.Transaccion;
+import com.bancoxyz.batch.repository.CuentaRepository;
 import com.bancoxyz.batch.repository.EstadoCuentaRepository;
-
+import com.bancoxyz.batch.repository.TransaccionCuentaRepository;
 
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ItemWriter;
@@ -17,12 +20,22 @@ public class CuentaAnualWriter
         implements ItemWriter<CuentaAnualProcesada> {
 
     private final EstadoCuentaRepository estadoCuentaRepository;
+    private final CuentaRepository cuentaRepository;
+    private final TransaccionCuentaRepository transaccionCuentaRepository;
 
     public CuentaAnualWriter(
-            EstadoCuentaRepository estadoCuentaRepository) {
+            EstadoCuentaRepository estadoCuentaRepository,
+            CuentaRepository cuentaRepository,
+            TransaccionCuentaRepository transaccionCuentaRepository) {
 
         this.estadoCuentaRepository =
                 estadoCuentaRepository;
+
+        this.cuentaRepository =
+                cuentaRepository;
+
+        this.transaccionCuentaRepository =
+                transaccionCuentaRepository;
     }
 
     @Override
@@ -31,10 +44,60 @@ public class CuentaAnualWriter
 
         for (CuentaAnualProcesada item : chunk.getItems()) {
 
-            /*
-             * Busca si ya existe un estado consolidado
-             * para la misma cuenta y año.
-             */
+            // ====================================================
+            // 1. CREAR CUENTA SI NO EXISTE
+            // ====================================================
+
+            if (!cuentaRepository.existsById(item.cuentaId())) {
+
+                Cuenta cuenta = new Cuenta();
+
+                cuenta.setCuentaId(
+                        item.cuentaId()
+                );
+
+                /*
+                 * El archivo cuentas_anuales.csv no proporciona
+                 * el tipo de cuenta.
+                 *
+                 * Por lo tanto, no inventamos este dato.
+                 */
+                cuenta.setTipo(null);
+
+                cuentaRepository.save(cuenta);
+            }
+
+            // ====================================================
+            // 2. GUARDAR TRANSACCIÓN INDIVIDUAL
+            // ====================================================
+
+            Transaccion transaccion =
+                    new Transaccion();
+
+            transaccion.setCuentaId(
+                    item.cuentaId()
+            );
+
+            transaccion.setFecha(
+                    item.fecha()
+            );
+
+            transaccion.setMonto(
+                    item.monto()
+            );
+
+            transaccion.setTipo(
+                    item.tipo()
+            );
+
+            transaccionCuentaRepository.save(
+                    transaccion
+            );
+
+            // ====================================================
+            // 3. ACTUALIZAR ESTADO ANUAL CONSOLIDADO
+            // ====================================================
+
             List<CuentaAnual> existentes =
                     estadoCuentaRepository.findByCuentaIdAndAnio(
                             item.cuentaId(),
@@ -45,10 +108,6 @@ public class CuentaAnualWriter
 
             if (!existentes.isEmpty()) {
 
-                /*
-                 * Ya existe un registro para la cuenta y año.
-                 * Se actualiza acumulando los valores.
-                 */
                 cuentaAnual = existentes.get(0);
 
                 BigDecimal totalDepositos =
@@ -100,10 +159,6 @@ public class CuentaAnualWriter
 
             } else {
 
-                /*
-                 * No existe un registro para la cuenta y año,
-                 * por lo tanto se crea el primer registro.
-                 */
                 cuentaAnual =
                         new CuentaAnual();
 
