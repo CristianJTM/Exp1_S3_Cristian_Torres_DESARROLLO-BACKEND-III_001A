@@ -2,10 +2,10 @@ package com.bancoxyz.batch.tasklet;
 
 import com.bancoxyz.batch.model.AnomaliaTransaccion;
 import com.bancoxyz.batch.model.ResumenTransacciones;
-import com.bancoxyz.batch.model.Transaccion;
+import com.bancoxyz.batch.model.TransaccionProcesada;
 import com.bancoxyz.batch.repository.AnomaliaTransaccionRepository;
 import com.bancoxyz.batch.repository.ResumenTransaccionesRepository;
-import com.bancoxyz.batch.repository.TransaccionRepository;
+import com.bancoxyz.batch.repository.TransaccionProcesadaRepository;
 
 import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -21,16 +21,16 @@ import java.util.LinkedHashMap;
 @Component
 public class ResumenAnomaliasTasklet implements Tasklet {
 
-    private final TransaccionRepository transaccionRepository;
+    private final TransaccionProcesadaRepository transaccionProcesadaRepository;
     private final AnomaliaTransaccionRepository anomaliaTransaccionRepository;
     private final ResumenTransaccionesRepository resumenTransaccionesRepository;
 
     public ResumenAnomaliasTasklet(
-            TransaccionRepository transaccionRepository,
+            TransaccionProcesadaRepository transaccionProcesadaRepository,
             AnomaliaTransaccionRepository anomaliaTransaccionRepository,
             ResumenTransaccionesRepository resumenTransaccionesRepository) {
 
-        this.transaccionRepository = transaccionRepository;
+        this.transaccionProcesadaRepository = transaccionProcesadaRepository;
         this.anomaliaTransaccionRepository =
                 anomaliaTransaccionRepository;
         this.resumenTransaccionesRepository =
@@ -46,8 +46,8 @@ public class ResumenAnomaliasTasklet implements Tasklet {
         // OBTENER TRANSACCIONES VÁLIDAS
         // ========================================================
 
-        List<Transaccion> transaccionesValidas =
-                transaccionRepository.findAll();
+        List<TransaccionProcesada> transaccionesValidas =
+                transaccionProcesadaRepository.findAll();
 
         // ========================================================
         // OBTENER TRANSACCIONES CON ANOMALÍAS
