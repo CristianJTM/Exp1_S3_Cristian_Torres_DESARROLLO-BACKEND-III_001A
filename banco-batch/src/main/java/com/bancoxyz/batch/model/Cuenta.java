@@ -8,18 +8,12 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "intereses")
+@Table(name = "cuentas")
 @NoArgsConstructor
-public class Interes {
+public class Cuenta {
 
     @Id
     private Long cuentaId;
-
-    private String nombre;
-
-    private BigDecimal saldo;
-
-    private Integer edad;
 
     private String tipo;
 
@@ -31,30 +25,6 @@ public class Interes {
 
     public void setCuentaId(Long cuentaId) {
         this.cuentaId = cuentaId;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public BigDecimal getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
-    }
-
-    public Integer getEdad() {
-        return edad;
-    }
-
-    public void setEdad(Integer edad) {
-        this.edad = edad;
     }
 
     public String getTipo() {

@@ -1,22 +1,17 @@
 package com.bancoxyz.batch.model;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "transacciones")
-@NoArgsConstructor
-public class Transaccion {
+@Table(name = "transacciones_procesadas")
+public class TransaccionProcesada {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-
-    @Column(name = "cuenta_id", nullable = false)
-    private Long cuentaId;
 
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
@@ -27,7 +22,26 @@ public class Transaccion {
     @Column(name = "tipo", length = 20)
     private String tipo;
 
-    // GETTERS Y SETTERS
+
+    @Column(name = "observacion", length = 500)
+    private String observacion;
+
+    public TransaccionProcesada() {
+    }
+
+    public TransaccionProcesada(
+            Long id,
+            LocalDate fecha,
+            BigDecimal monto,
+            String tipo,
+            String observacion) {
+
+        this.id = id;
+        this.fecha = fecha;
+        this.monto = monto;
+        this.tipo = tipo;
+        this.observacion = observacion;
+    }
 
     public Long getId() {
         return id;
@@ -35,14 +49,6 @@ public class Transaccion {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getCuentaId() {
-        return cuentaId;
-    }
-
-    public void setCuentaId(Long cuentaId) {
-        this.cuentaId = cuentaId;
     }
 
     public LocalDate getFecha() {
@@ -67,5 +73,13 @@ public class Transaccion {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 }
