@@ -77,65 +77,21 @@ public class EstadosAnualesJobConfig {
 
                 .transactionManager(transactionManager)
 
-                // ====================================================
-                // READER
-                // ====================================================
-
                 .reader(cuentasAnualesReader)
-
-                // ====================================================
-                // PROCESSOR
-                // ====================================================
 
                 .processor(cuentaAnualProcessor)
 
-                // ====================================================
-                // WRITER
-                // ====================================================
-
                 .writer(cuentaAnualWriter)
-
-                // ====================================================
-                // PROCESAMIENTO PARALELO
-                // ====================================================
-
-                .taskExecutor(batchTaskExecutor)
-
-                // ====================================================
-                // TOLERANCIA A FALLOS
-                // ====================================================
 
                 .faultTolerant()
 
-                // Listener encargado de registrar registros omitidos
                 .listener(cuentaAnualSkipListener)
 
-                // ====================================================
-                // RETRY
-                // ====================================================
-
-                /*
-                 * Los errores de acceso a datos pueden ser
-                 * transitorios, por lo que se permiten
-                 * hasta 3 reintentos.
-                 */
                 .retry(DataAccessException.class)
                 .retryLimit(3)
 
-                // ====================================================
-                // SKIP
-                // ====================================================
-
-                /*
-                 * Los errores de formato del archivo CSV se
-                 * consideran registros que pueden omitirse.
-                 */
                 .skip(FlatFileParseException.class)
 
-                /*
-                 * Los datos que no cumplen las reglas de negocio
-                 * son registrados por el SkipListener y omitidos.
-                 */
                 .skip(DatoInvalidoException.class)
 
                 .skipLimit(650)

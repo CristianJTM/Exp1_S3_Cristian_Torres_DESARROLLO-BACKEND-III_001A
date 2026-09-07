@@ -1,5 +1,7 @@
 package com.bancoxyz.batch.config;
 
+import com.bancoxyz.batch.repository.TransaccionProcesadaRepository;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemReader;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.infrastructure.item.support.SynchronizedItemStreamReader;
@@ -7,12 +9,14 @@ import org.springframework.batch.infrastructure.item.support.builder.Synchronize
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class BatchDataConfig {
@@ -97,14 +101,17 @@ public class BatchDataConfig {
 
     public record CuentaAnualProcesada(
             Long cuentaId,
+            LocalDate fecha,
+            String tipo,
+            BigDecimal monto,
+            String descripcion,
             Integer anio,
             BigDecimal totalDepositos,
             BigDecimal totalRetiros,
             BigDecimal saldoMovimiento,
             Integer cantidadOperaciones,
             String observacion
-    ) {
-    }
+    ) {}
 
 
     // ============================================================
