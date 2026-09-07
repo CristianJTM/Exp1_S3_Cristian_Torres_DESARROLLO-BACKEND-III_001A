@@ -30,8 +30,6 @@ public class CuentaService {
         CuentaDTO dto = new CuentaDTO();
 
         dto.setCuentaId(cuenta.getCuentaId());
-        dto.setSaldo(cuenta.getSaldo());
-        dto.setTipo(cuenta.getTipo());
 
         return dto;
     }
