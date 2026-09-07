@@ -1,4 +1,4 @@
-package com.bancoxyz.backend_core;
+package com.bancoxyz.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
