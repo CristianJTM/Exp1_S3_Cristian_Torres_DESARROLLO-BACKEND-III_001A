@@ -1,4 +1,4 @@
-package com.bancoxyz.backend_core;
+package com.bancoxyz.core;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
