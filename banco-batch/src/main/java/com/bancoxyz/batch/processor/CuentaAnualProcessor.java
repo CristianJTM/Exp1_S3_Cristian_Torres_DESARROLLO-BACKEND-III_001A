@@ -19,7 +19,6 @@ public class CuentaAnualProcessor
             CuentaAnualInput item)
             throws DatoInvalidoException {
 
-
         // ========================================================
         // VALIDACIÓN DE CUENTA
         // ========================================================
@@ -64,19 +63,6 @@ public class CuentaAnualProcessor
         }
 
         // ========================================================
-        // VALIDACIÓN DE DESCRIPCIÓN
-        // ========================================================
-
-        if (item.descripcion() == null ||
-                item.descripcion().isBlank()) {
-
-            throw new DatoInvalidoException(
-                    "Cuenta " + item.cuentaId()
-                            + ": descripción inexistente."
-            );
-        }
-
-        // ========================================================
         // VALIDACIÓN DEL TIPO DE TRANSACCIÓN
         // ========================================================
 
@@ -108,7 +94,8 @@ public class CuentaAnualProcessor
 
         if (!"deposito".equals(tipo) &&
                 !"retiro".equals(tipo) &&
-                !"compra".equals(tipo)) {
+                !"compra".equals(tipo) &&
+                !"pago".equals(tipo)) {
 
             throw new DatoInvalidoException(
                     "Cuenta " + item.cuentaId()
@@ -118,43 +105,30 @@ public class CuentaAnualProcessor
         }
 
         // ========================================================
-        // INICIALIZACIÓN DE TOTALES
+        // NORMALIZACIÓN DEL MONTO
+        // ========================================================
+
+        BigDecimal monto = item.monto().abs();
+
+        // ========================================================
+        // CÁLCULO DEL MOVIMIENTO
         // ========================================================
 
         BigDecimal totalDepositos = BigDecimal.ZERO;
         BigDecimal totalRetiros = BigDecimal.ZERO;
         BigDecimal saldoMovimiento;
 
-        // ========================================================
-        // CLASIFICACIÓN Y NORMALIZACIÓN DEL MOVIMIENTO
-        // ========================================================
-
         if ("deposito".equals(tipo)) {
 
-            // ----------------------------------------------------
-            // DEPÓSITO
-            // ----------------------------------------------------
-            // Todo depósito representa un ingreso.
-            // Se normaliza el monto a positivo aunque el archivo
-            // legacy lo entregue con signo negativo.
+            totalDepositos = monto;
 
-            totalDepositos = item.monto().abs();
-
-            saldoMovimiento = totalDepositos;
+            saldoMovimiento = monto;
 
         } else {
 
-            // ----------------------------------------------------
-            // RETIRO / COMPRA
-            // ----------------------------------------------------
-            // Todo retiro o compra representa un egreso.
-            // Se normaliza el monto a negativo para representar
-            // correctamente su efecto sobre el saldo.
+            totalRetiros = monto;
 
-            totalRetiros = item.monto().abs();
-
-            saldoMovimiento =
-                    totalRetiros.negate();
+            saldoMovimiento = monto.negate();
         }
 
         // ========================================================
@@ -163,6 +137,10 @@ public class CuentaAnualProcessor
 
         return new CuentaAnualProcesada(
                 item.cuentaId(),
+                item.fecha(),
+                tipo,
+                monto,
+                item.descripcion(),
                 item.fecha().getYear(),
                 totalDepositos,
                 totalRetiros,

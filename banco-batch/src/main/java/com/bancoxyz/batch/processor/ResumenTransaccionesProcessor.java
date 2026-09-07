@@ -2,7 +2,7 @@ package com.bancoxyz.batch.processor;
 
 import com.bancoxyz.batch.model.ResumenTransacciones;
 import com.bancoxyz.batch.repository.AnomaliaTransaccionRepository;
-import com.bancoxyz.batch.repository.TransaccionRepository;
+import com.bancoxyz.batch.repository.TransaccionProcesadaRepository;
 
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.stereotype.Component;
@@ -13,14 +13,14 @@ import java.time.LocalDate;
 public class ResumenTransaccionesProcessor
         implements ItemProcessor<LocalDate, ResumenTransacciones> {
 
-    private final TransaccionRepository transaccionRepository;
+    private final TransaccionProcesadaRepository transaccionProcesadaRepository;
     private final AnomaliaTransaccionRepository anomaliaTransaccionRepository;
 
     public ResumenTransaccionesProcessor(
-            TransaccionRepository transaccionRepository,
+            TransaccionProcesadaRepository transaccionProcesadaRepository,
             AnomaliaTransaccionRepository anomaliaTransaccionRepository) {
 
-        this.transaccionRepository = transaccionRepository;
+        this.transaccionProcesadaRepository = transaccionProcesadaRepository;
         this.anomaliaTransaccionRepository = anomaliaTransaccionRepository;
     }
 
@@ -32,7 +32,7 @@ public class ResumenTransaccionesProcessor
         // ========================================================
 
         int validas =
-                transaccionRepository.findByFecha(fecha).size();
+                transaccionProcesadaRepository.findByFecha(fecha).size();
 
         // ========================================================
         // OBTENER CANTIDAD DE ANOMALÍAS
