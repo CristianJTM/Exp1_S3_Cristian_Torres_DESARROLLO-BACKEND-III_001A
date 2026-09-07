@@ -1,9 +1,10 @@
 package com.bancoxyz.batch.repository;
 
-import com.bancoxyz.batch.model.Cuenta;
+import com.bancoxyz.batch.model.Transaccion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
+public interface TransaccionCuentaRepository
+        extends JpaRepository<Transaccion, Long> {
 }
