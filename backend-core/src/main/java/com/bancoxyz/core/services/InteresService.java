@@ -1,7 +1,7 @@
 package com.bancoxyz.core.services;
 
 import com.bancoxyz.core.dtos.InteresDTO;
-import com.bancoxyz.core.entities.InteresEntity;
+import com.bancoxyz.core.model.Interes;
 import com.bancoxyz.core.repositories.InteresRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class InteresService {
 
     public InteresDTO buscarPorCuenta(Long cuentaId) {
 
-        InteresEntity interes = interesRepository.findById(cuentaId)
+        Interes interes = interesRepository.findById(cuentaId)
                 .orElse(null);
 
         if (interes == null) {
@@ -24,7 +24,7 @@ public class InteresService {
         return convertirADTO(interes);
     }
 
-    private InteresDTO convertirADTO(InteresEntity interes) {
+    private InteresDTO convertirADTO(Interes interes) {
 
         InteresDTO dto = new InteresDTO();
 

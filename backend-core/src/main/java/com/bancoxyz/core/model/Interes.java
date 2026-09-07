@@ -1,4 +1,4 @@
-package com.bancoxyz.core.entities;
+package com.bancoxyz.core.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,14 +8,18 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "cuentas")
+@Table(name = "intereses")
 @NoArgsConstructor
-public class CuentaEntity {
+public class Interes {
 
     @Id
     private Long cuentaId;
 
+    private String nombre;
+
     private BigDecimal saldo;
+
+    private Integer edad;
 
     private String tipo;
 
@@ -29,12 +33,28 @@ public class CuentaEntity {
         this.cuentaId = cuentaId;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public BigDecimal getSaldo() {
         return saldo;
     }
 
     public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
     public String getTipo() {

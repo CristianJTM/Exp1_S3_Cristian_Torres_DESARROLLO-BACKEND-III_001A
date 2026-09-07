@@ -1,7 +1,7 @@
 package com.bancoxyz.core.services;
 
 import com.bancoxyz.core.dtos.CuentaDTO;
-import com.bancoxyz.core.entities.CuentaEntity;
+import com.bancoxyz.core.model.Cuenta;
 import com.bancoxyz.core.exceptions.CuentaNoEncontradaException;
 import com.bancoxyz.core.repositories.CuentaRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class CuentaService {
 
     public CuentaDTO buscarPorId(Long cuentaId) {
 
-        CuentaEntity cuenta = cuentaRepository.findById(cuentaId)
+        Cuenta cuenta = cuentaRepository.findById(cuentaId)
                 .orElseThrow(() ->
                         new CuentaNoEncontradaException(
                                 "No se encontró la cuenta con ID: " + cuentaId
@@ -25,7 +25,7 @@ public class CuentaService {
         return convertirADTO(cuenta);
     }
 
-    private CuentaDTO convertirADTO(CuentaEntity cuenta) {
+    private CuentaDTO convertirADTO(Cuenta cuenta) {
 
         CuentaDTO dto = new CuentaDTO();
 

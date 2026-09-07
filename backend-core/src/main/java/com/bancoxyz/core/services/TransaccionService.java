@@ -1,7 +1,7 @@
 package com.bancoxyz.core.services;
 
 import com.bancoxyz.core.dtos.TransaccionDTO;
-import com.bancoxyz.core.entities.TransaccionEntity;
+import com.bancoxyz.core.model.Transaccion;
 import com.bancoxyz.core.exceptions.TransaccionNoEncontradaException;
 import com.bancoxyz.core.repositories.TransaccionRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class TransaccionService {
 
     public TransaccionDTO buscarPorId(Long id) {
 
-        TransaccionEntity transaccion = transaccionRepository.findById(id)
+        Transaccion transaccion = transaccionRepository.findById(id)
                 .orElseThrow(() ->
                         new TransaccionNoEncontradaException(
                                 "No se encontró la transacción con ID: " + id
@@ -35,7 +35,7 @@ public class TransaccionService {
                 .toList();
     }
 
-    private TransaccionDTO convertirADTO(TransaccionEntity transaccion) {
+    private TransaccionDTO convertirADTO(Transaccion transaccion) {
 
         TransaccionDTO dto = new TransaccionDTO();
 

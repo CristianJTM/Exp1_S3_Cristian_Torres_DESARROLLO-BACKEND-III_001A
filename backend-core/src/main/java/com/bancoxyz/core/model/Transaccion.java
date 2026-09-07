@@ -1,4 +1,4 @@
-package com.bancoxyz.core.entities;
+package com.bancoxyz.core.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "transacciones")
 @NoArgsConstructor
-public class TransaccionEntity {
+public class Transaccion {
 
     @Id
     private Long id;
