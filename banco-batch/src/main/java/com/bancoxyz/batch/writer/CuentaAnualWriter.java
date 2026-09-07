@@ -194,6 +194,16 @@ public class CuentaAnualWriter
             estadoCuentaRepository.save(
                     cuentaAnual
             );
+
+            Cuenta cuenta =
+                    cuentaRepository.findById(item.cuentaId())
+                            .orElseThrow();
+
+            cuenta.setSaldo(
+                    cuentaAnual.getSaldoMovimiento()
+            );
+
+            cuentaRepository.save(cuenta);
         }
     }
 }
