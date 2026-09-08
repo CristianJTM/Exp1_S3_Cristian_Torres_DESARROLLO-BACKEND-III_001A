@@ -31,7 +31,7 @@ public class BffWebService {
 
         ResumenMovimientosDTO resumenMovimientos =
                 construirResumen(transacciones);
-
+        resumenMovimientos.setSaldo(cuenta.getSaldo());
         CuentaWebResumenDTO resumen = new CuentaWebResumenDTO();
         resumen.setCuentaId(cuenta.getCuentaId());
         resumen.setResumen(resumenMovimientos);
@@ -59,10 +59,10 @@ public class BffWebService {
         ResumenMovimientosDTO resumenMovimientos =
                 construirResumen(transacciones);
 
+        resumenMovimientos.setSaldo(cuenta.getSaldo());
         CuentaWebResumenDTO resumen = new CuentaWebResumenDTO();
         resumen.setCuentaId(cuenta.getCuentaId());
         resumen.setResumen(resumenMovimientos);
-
         return resumen;
     }
 
