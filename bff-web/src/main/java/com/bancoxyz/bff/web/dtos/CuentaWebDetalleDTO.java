@@ -1,7 +1,14 @@
 package com.bancoxyz.bff.web.dtos;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.util.List;
 
+@JsonPropertyOrder({
+        "cuentaId",
+        "resumen",
+        "movimientos"
+})
 public class CuentaWebDetalleDTO {
 
     private Long cuentaId;
